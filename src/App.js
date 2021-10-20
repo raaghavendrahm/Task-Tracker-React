@@ -4,6 +4,19 @@ import { useState } from 'react';
 import AddTask from './components/AddTask';
 
 function App() {
+  const [showAddTask, setShowAddTask] = useState(false);
+  /* 
+  - showAddTask state is used to decide whether or not to display AddTask component.
+  - Value of showAddTask is false by default and that doesn't display AddTask component.
+  - The true and false value of showAddTask is toggle by click on Add button.
+  - This will be false by default and when clicked, its value will change to true and the AddTask component will be displayed.
+  - onAddClick prop uses setShowAddTask method to toggle the current boolean value of showAddTask. This happens with click on Add button. This prop is passed from App to Header.
+  - If the state of showAddTask is true, using the conditional, the AddTask component will be displayed.
+  - showAddTaskValue prop holds the current boolean value of showAddTask. If true, the AddTask component will be displayed, text of the button will be 'Close', and its color will be red. If false, the AddTask component will not be displayed, text of the button will be 'Add', and its color will be green.
+  - All the above props are embedded in the return function.
+  
+  */
+
   const [tasks, setTasks] = useState([
     {
       id: 1,
@@ -57,8 +70,12 @@ function App() {
   return (
     <div className="App">
       <div className="container">
-        <Header title="TT" />
-        <AddTask onAdd={addTask} />
+        <Header
+          title="TT"
+          onAddClick={() => setShowAddTask(!showAddTask)}
+          showAddTaskValue={showAddTask}
+        />
+        {showAddTask && <AddTask onAdd={addTask} />}
         {tasks.length > 0 ? (
           <Tasks
             tasks={tasks}
