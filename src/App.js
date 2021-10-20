@@ -36,7 +36,11 @@ function App() {
     <div className="App">
       <div className="container">
         <Header title="TT" />
-        <Tasks tasks={tasks} onDelete={deleteTask} />
+        {tasks.length > 0 ? (
+          <Tasks tasks={tasks} onDelete={deleteTask} />
+        ) : (
+          'No Tasks To Show'
+        )}
       </div>
     </div>
   );
