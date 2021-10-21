@@ -103,6 +103,8 @@ function App() {
         </div>
       </div>
     </Router>
+
+    // This completes the UI. If this is enough, "npm run build" can be run to get the production build and deploy. If a backend is to be connect to get the data, "json-server" is used to mock backend and access data from it with db.json file instead of having data in App component.
   );
 }
 
