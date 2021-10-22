@@ -53,7 +53,13 @@ function App() {
   };
 
   // Delete Task
-  const deleteTask = (id) => {
+  const deleteTask = async (id) => {
+    // To delete a task from the server (not only from UI) when clicked on 'x':
+    await fetch(`http://localhost:5000/tasks/${id}`, {
+      method: 'DELETE',
+    });
+
+    // When clicked on delete icon of a task, if the id is matching with the one which is clicked, then it will be removed from the UI:
     setTasks(tasks.filter((task) => task.id !== id));
 
     // Display the tasks whose id is not as same as the id of the task whose 'x' is clicked. So, doesn't display the task whose 'x' is clicked.
