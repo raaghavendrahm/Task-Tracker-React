@@ -5,6 +5,7 @@ import AddTask from './components/AddTask';
 import Footer from './components/Footer';
 import About from './components/About';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { useEffect } from 'react';
 
 function App() {
   const [showAddTask, setShowAddTask] = useState(false);
@@ -22,6 +23,25 @@ function App() {
 
   // Initial state for tasks
   const [tasks, setTasks] = useState([]);
+
+  // // To fetch the data from db (mock seerver) as soon as the page is loaded, useEffect is used with an empty array dependency
+  useEffect(() => {
+    const getTasks = async () => {
+      const tasksFromServer = await fetchTasks();
+      setTasks(tasksFromServer);
+    };
+    getTasks();
+  }, []);
+
+  // Fetch Tasks
+  const fetchTasks = async () => {
+    const res = await fetch('http://localhost:5000/tasks');
+    const data = await res.json();
+
+    return data;
+
+    // fetchTasks funtion is not used directly inside useEffect as this is needed for many other requirements too. So, getTasks is called inside useEffect that calls fetchTasks.
+  };
 
   // Add Task
   const addTask = (task) => {
