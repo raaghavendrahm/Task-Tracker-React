@@ -144,7 +144,7 @@ function App() {
       <div className="App">
         <div className="container">
           <Header
-            title="TT"
+            title="Task Tracker"
             onAddClick={() => setShowAddTask(!showAddTask)}
             showAddTaskValue={showAddTask}
           />
