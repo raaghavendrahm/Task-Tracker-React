@@ -43,7 +43,16 @@ function App() {
     // fetchTasks funtion is not used directly inside useEffect as this is needed for many other requirements too. So, getTasks is called inside useEffect that calls fetchTasks.
   };
 
+  // Fetch Task (To assist the reflection of Toggle of reminder in the server)
+  const fetchTask = async (id) => {
+    const res = await fetch(`http://localhost:5000/tasks/${id}`);
+    const data = await res.json();
+
+    return data;
+  };
+
   // Add Task
+
   // To add a task not only to UI, but to the server too:
   const addTask = async (task) => {
     const res = await fetch('http://localhost:5000/tasks', {
@@ -59,18 +68,20 @@ function App() {
     setTasks([...tasks, data]); // new data is added to the existing tasks.
 
     // BEFORE BACKEND
-    /*const addTask = (task) => {
-        const id = Math.floor(Math.random() * 10000) + 1;
-        const newTask = { id, ...task };
-        setTasks([...tasks, newTask]);
+    /* const addTask = (task) => {
+      const id = Math.floor(Math.random() * 10000) + 1;
+      const newTask = { id, ...task };
+      setTasks([...tasks, newTask]);
 
-        // addTask takes 'task' parameter which is the form input. This contains text, day, and reminer. But, id will be missing. So, a unique id is generated for each new task added. Then, the new task will be this new id and all the other properties from from input. This new task will be added to the tasks lisk using setTasks method which displays the current tasks followed by the new task added.
+      // addTask takes 'task' parameter which is the form input. This contains text, day, and reminer. But, id will be missing. So, a unique id is generated for each new task added. Then, the new task will be this new id and all the other properties from from input. This new task will be added to the tasks lisk using setTasks method which displays the current tasks followed by the new task added.
 
-        // This adds the tasks to UI, not to the server and with page refresh the added task would disappear.
+      // This adds the tasks to UI, not to the server and with page refresh the added task would disappear.
     }; */
   };
 
   // Delete Task
+
+  // To delete a task not only from UI, but server too:
   const deleteTask = async (id) => {
     // To delete a task from the server (not only from UI) when clicked on 'x':
     await fetch(`http://localhost:5000/tasks/${id}`, {
@@ -83,23 +94,49 @@ function App() {
     // Display the tasks whose id is not as same as the id of the task whose 'x' is clicked. So, doesn't display the task whose 'x' is clicked.
 
     // BEFORE BACKEND:
-    /*  const deleteTask = (id) => {
+    /* const deleteTask = (id) => {
       // When clicked on delete icon of a task, if the id is matching with the one which is clicked, then it will be removed from the UI:
       setTasks(tasks.filter((task) => task.id !== id));
 
       // This deletes the tasks from UI, not from the server and with page refresh the deleted task would re-appear.
-    } */
+    }; */
   };
 
   // Toggle Reminder
-  const toggleReminder = (id) => {
+
+  // To toggle reminder of a task not only from UI, but server too:
+  const toggleReminder = async (id) => {
+    const taskToToggle = await fetchTask(id);
+    const updatedTask = { ...taskToToggle, reminder: !taskToToggle.reminder };
+
+    const res = await fetch(`http://localhost:5000/tasks/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(updatedTask),
+    });
+
+    const data = await res.json();
+    // When a task is double clicked, the value of its 'reminder' property is switched to the other (if it is 'true', changed to 'false' or vice-versa). And if true, then a green left border is added, otherwise removed:
     setTasks(
       tasks.map((task) =>
-        task.id === id ? { ...task, reminder: !task.reminder } : task
+        task.id === id ? { ...task, reminder: data.reminder } : task
       )
     );
 
-    // Toggle the boolean value of reminder of the task which is double clicked. A green left border is added to it which is styled in Task component by adding 'reminder' class.
+    // BEFORE BACKEND
+    /*  const toggleReminder = (id) => {
+      setTasks(
+        tasks.map((task) =>
+          task.id === id ? { ...task, reminder: !task.reminder } : task
+        )
+      );
+
+      // Toggle the boolean value of reminder of the task which is double clicked. A green left border is added to it which is styled in Task component by adding 'reminder' class.
+
+      // This toggles reminder only in UI, not on the server. So, with page refresh, it displays the reminder state with which the task was added. That is, if a task is added with reminder 'true', then toggled to 'false' with double click, followed by a page refresh diplays the state as 'true' (with green left border), not as 'false' even though it was toggled. This is corrected by the updated toggleReminder function above.
+    }; */
   };
 
   return (
