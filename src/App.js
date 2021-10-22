@@ -63,6 +63,14 @@ function App() {
     setTasks(tasks.filter((task) => task.id !== id));
 
     // Display the tasks whose id is not as same as the id of the task whose 'x' is clicked. So, doesn't display the task whose 'x' is clicked.
+
+    // BEFORE BACKEND:
+    /*  const deleteTask = (id) => {
+      // When clicked on delete icon of a task, if the id is matching with the one which is clicked, then it will be removed from the UI:
+      setTasks(tasks.filter((task) => task.id !== id));
+
+      // This deletes the tasks from UI, not from the server and with page refresh the deleted task would re-appear.
+    } */
   };
 
   // Toggle Reminder
