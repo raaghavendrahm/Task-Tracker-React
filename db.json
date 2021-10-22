@@ -11,6 +11,12 @@
       "text": "Task Two",
       "day": "Day Two",
       "reminder": true
+    },
+    {
+      "text": "Task Three",
+      "day": "Day Three",
+      "reminder": false,
+      "id": 3
     }
   ]
 }

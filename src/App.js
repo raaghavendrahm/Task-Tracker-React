@@ -44,12 +44,30 @@ function App() {
   };
 
   // Add Task
-  const addTask = (task) => {
-    const id = Math.floor(Math.random() * 10000) + 1;
-    const newTask = { id, ...task };
-    setTasks([...tasks, newTask]);
+  // To add a task not only to UI, but to the server too:
+  const addTask = async (task) => {
+    const res = await fetch('http://localhost:5000/tasks', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(task),
+    });
 
-    // addTask takes 'task' parameter which is the form input. This contains text, day, and reminer. But, id will be missing. So, a unique id is generated for each new task added. Then, the new task will be this new id and all the other properties from from input. This new task will be added to the tasks lisk using setTasks method which displays the current tasks followed by the new task added.
+    const data = await res.json(); // new task added
+
+    setTasks([...tasks, data]); // new data is added to the existing tasks.
+
+    // BEFORE BACKEND
+    /*const addTask = (task) => {
+        const id = Math.floor(Math.random() * 10000) + 1;
+        const newTask = { id, ...task };
+        setTasks([...tasks, newTask]);
+
+        // addTask takes 'task' parameter which is the form input. This contains text, day, and reminer. But, id will be missing. So, a unique id is generated for each new task added. Then, the new task will be this new id and all the other properties from from input. This new task will be added to the tasks lisk using setTasks method which displays the current tasks followed by the new task added.
+
+        // This adds the tasks to UI, not to the server and with page refresh the added task would disappear.
+    }; */
   };
 
   // Delete Task
