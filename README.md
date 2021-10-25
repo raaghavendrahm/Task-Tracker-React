@@ -1,4 +1,4 @@
-Credits: [Brad Traversy](https://github.com/bradtraversy)
+## Project Credits: [Brad Traversy](https://github.com/bradtraversy)
 
 # Getting Started with Create React App
 
